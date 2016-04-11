@@ -1,25 +1,27 @@
-package com.csc.lesson6;
+package ru.csc.vikulov.todolist;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class ReaderOpenHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 2;
+public class DatabaseHelper extends SQLiteOpenHelper {
+
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "reader.db";
 
     private static final String SQL_CREATE_ENTRIES_TABLE =
             "CREATE TABLE " + FeedsTable.TABLE_NAME
                     + "("
                     + FeedsTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + FeedsTable.COLUMN_TITLE + " TEXT, "
                     + FeedsTable.COLUMN_CONTENT + " TEXT, "
-                    + FeedsTable.COLUMN_DATE + " TEXT"
+                    + FeedsTable.COLUMN_DATE + " DATETIME, "
+                    + FeedsTable.COLUMN_DONE + " BOOLEAN, "
+                    + FeedsTable.COLUMN_PRIOR + " BOOLEAN"
                     + ")";
 
     private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + FeedsTable.TABLE_NAME;
 
-    public ReaderOpenHelper(Context context) {
+    public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -29,16 +31,7 @@ public class ReaderOpenHelper extends SQLiteOpenHelper {
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQL_DELETE_ENTRIES);
-        switch (oldVersion) {
-            case 1:
-//                ...
-                break;
-            case 2:
-//                ...
-                break;
-            default:
-                throw new IllegalStateException();
-        }
         onCreate(db);
     }
+
 }
